@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { AuthInterceptorSercvice } from './auth/auth.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -26,7 +27,12 @@ import { EditComponent } from './home/edit/edit.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [CookieService],
+  providers: [CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorSercvice,
+      multi: true,
+      }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

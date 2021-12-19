@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { number } = require('yargs')
 const userSchema = new mongoose.Schema({
     // name: {
     // type: String,
@@ -35,6 +36,30 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: Buffer
+    },
+    first_name: {
+        type: String,
+        trim: true,
+    },
+    last_name: {
+        type: String,
+        trim: true
+    },
+    phone:{
+        type: Number,
+        trim: true
+    },
+    latitude:{
+        type: Number
+    },
+    longitude:{
+        type: Number
+    },
+    gender:{
+        type: String
+    },
+    bio: {
+        type: String
     },
     tokens: [{
         token : {

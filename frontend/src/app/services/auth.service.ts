@@ -11,7 +11,7 @@ export interface AuthResponseData {
     user: any;
     token: string;
     email: string;
-    refreshToekn: string;
+    refreshToken: string;
     expiresIn: string;
     localId: string;
     resgistered?: boolean;
@@ -25,7 +25,7 @@ export class AuthService{
     AUTH_API = 'http://localhost:3000/'
     private tokenExpirationTimer: any;
     constructor(private http: HttpClient, private router: Router, private cookieService : CookieService){}
-    // savedUser : any;
+    savedUser : any;
     
 
 
@@ -78,8 +78,9 @@ export class AuthService{
                 returnSecureToken : true
             }, options
         ).pipe(tap(resData =>{
-            console.log('80', resData.email);
-            this.handleAuthentication(resData.email,resData.localId,resData.token,
+            this.savedUser = resData.user;
+            console.log('80', resData);
+            this.handleAuthentication(resData.user.email,resData.user.localId,resData.token,
                 +resData.expiresIn)
                 // this.cookieService.set('Token', resData.token)
         }))
@@ -96,11 +97,13 @@ export class AuthService{
         } = JSON.parse(localStorage.getItem('userData'));
         if(!userData) return;
         console.log('100',userData.email)
+        this.cookieService.set('Token', userData._token)
+        
         const loadedUser = new User(userData.email, 
                                     userData.id, 
                                     userData._token, 
                                     new Date(userData._tokenExpirationDate));
-            console.log('105', loadedUser._token)
+            console.log('105', loadedUser.email)
         if(loadedUser._token){
             console.log('107',loadedUser);
             this.user.next(loadedUser)

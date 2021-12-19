@@ -20,7 +20,30 @@ router.post('/signup',async(req,res)=>{
     }
 })
 
-router.post('/login', async(req, res) => {
+router.post('/edit',auth, async(req,res)=>{
+   try{ 
+       const user = req.user
+    //    console.log('26', user)
+    console.log('25',req.headers.token)
+    user.first_name = req.body.first_name
+    // console.log('27')
+    user.last_name = req.body.last_name
+    user.phone = req.body.phone
+    user.latitude = req.body.latitude
+    user.longitude = req.body.longitude
+    user.gender = req.body.gender
+    user.bio = req.body.bio 
+    await req.user.save()
+
+    res.json(user)
+    console.log('DONE')
+   }catch(e){
+       console.log(e)
+    res.status(400).send()
+   }
+})
+
+router.post('/login', async(req, res) => {7
     try{
         // verification
         const user = await User.findByCredentials(req.body.email,req.body.password)
@@ -28,7 +51,7 @@ router.post('/login', async(req, res) => {
             // giving token
         const token = await user.generateAuthToken()
         // creating cookie 
-        res.cookie('Token', token, {maxAge: 50000, httpOnly: true, secure: false ,sameSite : 'None'})
+        res.cookie('Token', token, {maxAge: 50000, httpOnly: true, secure: false})
         console.log('Cookie')
         res.json({user ,email:user.email, token});
         }
@@ -36,6 +59,7 @@ router.post('/login', async(req, res) => {
         res.status(400).send()
     }
 }) 
+
 
 router.post('/logout', auth , async(req,res)=> {
     try { 
