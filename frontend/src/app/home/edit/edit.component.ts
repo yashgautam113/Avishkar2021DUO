@@ -34,7 +34,8 @@ export class EditComponent implements OnInit {
         if(!form.valid) return;
         let editObs: Observable<any>
         // console.log(form.value);
-        editObs = this.editService.edit(form);
+        console.log('37',form.value.gender)
+        editObs = this.editService.edit(form, this.latitude , this.longitude);
         console.log('37',editObs)
         editObs.subscribe(resData=>{
           console.log('40',resData)

@@ -44,9 +44,19 @@
             required
              /> 
             </div> 
+            <div class="form-group">
+              <label for="age"></label>
+              <input type="number" id="age" 
+              class="textbox" 
+              placeholder = "Age"
+              ngModel
+              name = "age"
+              required
+               /> 
+              </div> 
         <h2>Gender</h2>
-        <input type="radio" name="gender" value="male"> Male<br>
-        <input type="radio" name="gender" value="female"> Female<br>
+        <input type="radio" name="gender" value="male" ngModel> Male<br>
+        <input type="radio" name="gender" value="female" required="required" ngModel> Female<br>
         <div class="form-group">
             <label for="bio"></label>
             <input type="text" id="bio" 

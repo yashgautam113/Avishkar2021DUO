@@ -8,7 +8,7 @@ import { AuthService } from "../services/auth.service";
 export class HomeComponent implements OnInit{
     
     constructor(private authService: AuthService) {}
-    // email = this.authService.DataOfUser._value.email;
+    email = this.authService.savedUser.email;
     // console.log(user)
     // this.authService.user.pipe(map(user => {
     //     const isAuth = !!user;
@@ -21,5 +21,7 @@ export class HomeComponent implements OnInit{
     // //     } 
     // // })
     // );
-    ngOnInit(){}
+    ngOnInit(){
+        console.log('25',this.email)
+    }
 }

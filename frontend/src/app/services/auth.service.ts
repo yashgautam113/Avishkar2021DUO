@@ -59,7 +59,7 @@ export class AuthService{
                 +resData.expiresIn)
         }))
     } 
-
+    
     login(email: string, password: string){
 
         let headers = new HttpHeaders({
@@ -79,7 +79,7 @@ export class AuthService{
             }, options
         ).pipe(tap(resData =>{
             this.savedUser = resData.user;
-            console.log('80', resData);
+            console.log('80', this.savedUser._token);
             this.handleAuthentication(resData.user.email,resData.user.localId,resData.token,
                 +resData.expiresIn)
                 // this.cookieService.set('Token', resData.token)
@@ -96,7 +96,7 @@ export class AuthService{
 
         } = JSON.parse(localStorage.getItem('userData'));
         if(!userData) return;
-        console.log('100',userData.email)
+        console.log('100',userData._token)
         this.cookieService.set('Token', userData._token)
         
         const loadedUser = new User(userData.email, 
@@ -104,8 +104,10 @@ export class AuthService{
                                     userData._token, 
                                     new Date(userData._tokenExpirationDate));
             console.log('105', loadedUser.email)
+            this.savedUser = loadedUser
         if(loadedUser._token){
             console.log('107',loadedUser);
+            this.savedUser = loadedUser;
             this.user.next(loadedUser)
             const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
             this.autologout(expirationDuration);
@@ -113,18 +115,46 @@ export class AuthService{
             // manually set data in expirationDuration argument to verify
         }
     }
-
-
+    
     logout(){
+        const cookieValue = this.cookieService.get('Token');
+
         this.user.next(null);
         this.router.navigate(['/auth']);
 
         // clear localSTorage
+        let headers = new HttpHeaders({ 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Credentials' : 'true',
+            'Access-Control-Allow-Origin': 'http://localhost:4200',
+            'withCredentials' : 'true',
+            'observe' : 'response',
+            'Token' : cookieValue
+        });
+        console.log('132',cookieValue);
+        let options = { headers: headers };
         localStorage.removeItem('userData');
+        // this.cookieService.deleteAll();
+        this.cookieService.delete('Token', '/', 'localhost', false, 'Lax');
         if(this.tokenExpirationTimer){
             clearTimeout(this.tokenExpirationTimer)
         }
         this.tokenExpirationTimer = null;
+        return this.http.post<AuthResponseData>(
+            this.AUTH_API + 'logout',{
+                // cookie: this.cookieValue,
+                returnSecureToken : true
+            },options
+        ).pipe(tap(resData=>{
+            const user = new User(
+            resData.user.email,
+              resData.user.localId,
+             resData.token,
+             new Date()
+            );
+        this.user.next(user);
+            }));
+        
     }
 
 
@@ -149,6 +179,8 @@ export class AuthService{
         // console.log('86',resData);
         localStorage.setItem('userData', JSON.stringify(user));
         // this.cookieService.set('Token', '1234')
+        console.log('179',user.token);
+        this.cookieService.set('Token', user.token)
     }
 
 

@@ -15,16 +15,16 @@ const auth = async(req,res, next) => {
             next()
         }
         else{
-            console.log('18')
+            // console.log('18')
         const decoded = jwt.verify(token, 'tokenkey')
-        console.log('20',decoded)
+        // console.log('20',decoded)
         const user = await User.findOne({_id: decoded._id})
         if(!user){
             throw Error()
         }
         req.token = token
         req.user = user
-        console.log('26',user)
+        // console.log('26',user)
         next()
     }
     }catch(e){

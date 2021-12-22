@@ -35,7 +35,8 @@ const userSchema = new mongoose.Schema({
         }
     },
     avatar: {
-        type: Buffer
+        // type: Buffer
+        data: Buffer, contentType: String
     },
     first_name: {
         type: String,
@@ -49,6 +50,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         trim: true
     },
+    age:{
+        type: Number,
+        trim : true
+    },
     latitude:{
         type: Number
     },
@@ -61,6 +66,9 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String
     },
+    likes:[{
+        type: String
+    }],
     tokens: [{
         token : {
             type : String,

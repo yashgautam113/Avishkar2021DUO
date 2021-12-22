@@ -6,7 +6,8 @@ import { AuthService, AuthResponseData } from '../services/auth.service';
 
 @Component({
     selector: 'app-auth',
-    templateUrl: './auth.component.html'
+    templateUrl: './auth.component.html',
+    styleUrls : ['./style.css']
 })
 
 export class AuthComponent{
@@ -37,7 +38,7 @@ export class AuthComponent{
         else{
             authObs = this.authService.signup(email, password);
         }
-        console.log(authObs)
+        console.log('41',authObs)
         authObs.subscribe(resData =>{
             // console.log('line40');
             console.log(resData);

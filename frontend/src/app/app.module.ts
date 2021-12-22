@@ -11,6 +11,8 @@ import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './home/profile/profilecomponent';
 import { EditComponent } from './home/edit/edit.component';
+import { FeedComponent } from './home/feed/feed.component';
+import { DisplayComponent } from './home/feed/display/display.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,9 @@ import { EditComponent } from './home/edit/edit.component';
     AuthComponent,
     HomeComponent,
     ProfileComponent,
-    EditComponent
+    EditComponent,
+    FeedComponent,
+    DisplayComponent
   ],
   imports: [
     BrowserModule,

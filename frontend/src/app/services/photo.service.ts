@@ -15,18 +15,19 @@ export interface EditResponseData {
     refreshToekn: string;
     expiresIn: string;
     localId: string;
+    photo: File;
     resgistered?: boolean;
 }
 
 @Injectable({providedIn: 'root'})
 
-export class EditService{
+export class PhotoService{
     user = new BehaviorSubject<any>(null);
     
     constructor(private http:HttpClient, private router: Router, private cookieService: CookieService) {}
     AUTH_API = 'http://localhost:3000/';
     cookieValue = this.cookieService.get('Token');
-    edit(form: NgForm, lat: number, lng: number){
+    phtoedit(form: NgForm){
         let headers = new HttpHeaders({
             'Content-Type': 'application/json',
             'Access-Control-Allow-Credentials' : 'true',
@@ -36,25 +37,17 @@ export class EditService{
             'Token' : this.cookieValue
         });
         let options = { headers: headers };
-        console.log('26',form.value);
+        console.log('26',form.value.photo);
         // this.cookieValue = this.cookieService.get('Token')
         console.log('39',this.cookieValue);
         return this.http.post<EditResponseData>(
-            this.AUTH_API + 'edit',{
-                first_name: form.value.first_name, 
-                last_name: form.value.last_name,
-                age: form.value.age,
-                phone: form.value.phone,
-                latitude: lat,
-                longitude: lng,
-                gender: form.value.gender,
-                bio: form.value.bio,
-                cookie: this.cookieValue,
+            this.AUTH_API + 'avatar',{
+                photo : form.value.photo,
                 returnSecureToken : true
             }, options
         ).pipe(tap(resData =>{
                 // new Date.getTime() returns number of milliseconds since 1970
-                console.log('39',resData.user);
+                console.log('50x',resData.user);
             const expirationDate = new Date();
             const user = new User(
                  resData.user.email,
