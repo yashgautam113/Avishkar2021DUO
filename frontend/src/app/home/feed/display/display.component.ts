@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 // import { userInfo } from 'os';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -18,11 +18,13 @@ import { DisplayService } from 'src/app/services/display.service';
     i = 1;
     id2: string;
     Obs : Observable<any>
+    DisObs: Observable<any>
     constructor(private http: HttpClient, private cookieService: CookieService,
         private displayService: DisplayService){}
     ngOnInit(){
        const id2 = this.user._id;
        this.id2 = id2;
+
     }
     AUTH_API = 'http://localhost:3000/';
     onsubmit(){
@@ -35,4 +37,18 @@ import { DisplayService } from 'src/app/services/display.service';
                 console.log('35',e)
             })
     }
+    ondislike(){
+        this.buttonClicked = true;
+
+        this.DisObs= this.displayService.dislike(this.id2);
+        this.DisObs.subscribe(resData=>{
+            console.log('44',resData);
+        },e=>{
+            console.log('46',e)
+        })
+    }
+
+    // ngOnChanges(changes: SimpleChanges): void {
+    //     console.log('52',changes)
+    // }
   }

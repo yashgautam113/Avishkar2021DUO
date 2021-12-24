@@ -1,8 +1,10 @@
 <div>
     <!-- <div class="col-xs-12"> -->
+      <body>
       <app-display
         *ngFor="let users of filteredUsers; let i = index"
         [user]="users"
         [index]="i"></app-display>
     <!-- </div> -->
+  </body>
   </div>

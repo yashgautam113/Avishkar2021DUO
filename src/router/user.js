@@ -44,7 +44,7 @@ router.post('/edit',auth, async(req,res)=>{
    }
 })
 
-router.post('/login', async(req, res) => {7
+router.post('/login', async(req, res) => {
     try{
         // verification
         const user = await User.findByCredentials(req.body.email,req.body.password)
@@ -83,14 +83,50 @@ router.post('/logout', auth , async(req,res)=> {
 
 router.get('/usersList',auth, async (req, res) => {
     try{
-    const users = await User.find({});
+        // const users = await User.find({ _id: { $ne: req.user.id } });
+        const user = req.user;
+        var likes = user.likes;
+        var dislikes = user.dislikes;
+        likes.push(user._id);
+        // ES6 destructuring
+        const array3 = [...likes, ...dislikes];;
+        // likes.concat(arr);
+        // console.log('93',array3.length)
+        // nin query will find all elements except those in array3
+        const users = await User.find({ _id: { $nin:  array3 } });
+        
+    // console.log('87',user)
+    
     // console.log('85',users)
     // console.log('86', req.user)
     // const userMap = [];
     // users.forEach((user) => {
     //     userMap.push(user);
     // });
-    
+
+//     const arr1 = [1,2,3,4]
+//     const arr2 = [2,4]
+//     x = arr1.filter(item => !arr2.includes(item));
+// console.log(x);
+
+        // var arr = [];
+        // users.forEach((index)=>{
+        //     console.log(index._id)
+        //     console.log('x',user._id)
+        //     if(index._id != user._id){
+        //         arr.push(user)
+        //     }
+        //     else{
+        //        console.log('107',index._id) 
+        //     }
+        // })
+        // const index = users.indexOf(user);
+        // if (index > -1) {
+        //     users.splice(index, 1);
+        //   }
+        //   console.log(index);
+        // var arr = users.filter(index => index!= user);
+        // console.log('103',arr)
     res.send(users);
 }catch(e){
     console.log('93',e)
@@ -117,8 +153,8 @@ const upload = multer({
     fileFilter(req, file, cb){
          // if(!file.originalname.endsWith('.jpg'))
         // match fn matches regular expression
-        if(!file.originalname.match(/\.(jpg)$/)) {
-            return cb(new Error('Please upload a JPG file'))
+        if(!file.originalname.match(/\.(PNG)$/)) {
+            return cb(new Error('Please upload a PNG file'))
         }
         // cb(new Error('File must be a pdf'))
         cb(undefined, true)
@@ -134,6 +170,15 @@ router.post('/avatar',auth,  upload.single('avatar'), async(req,res)=>{
     res.status(500).send()
     ({error : error.message})
 }) 
+// router.post('/:id/avatar',  upload.single('avatar'), async (req, res) => {
+//     const user = await User.findById(req.params.id)
+//     user.avatar = req.file.buffer
+//     console.log(user.avatar)
+//     await user.save()
+//     res.send()
+// }, (error, req, res, next) => {
+//     res.status(400).send({ error: error.message })
+// })
 
 // Deleting Profile picture
 router.delete('/avatar', auth, async(req,res)=>{
@@ -144,7 +189,7 @@ router.delete('/avatar', auth, async(req,res)=>{
 
 router.get('/avatar',auth, async(req,res) =>{
     try{
-        console.log('146',req.user.avatar)
+        // console.log('146',req.user.avatar)
         const user = req.user
         // Setting header
         // res.set('Content-Type', 'image/jpeg')
@@ -157,7 +202,7 @@ router.get('/avatar',auth, async(req,res) =>{
     }
 })
 
-// router.get('/users/:id/avatar', async (req, res) => {
+// router.get('/:id/avatar', async (req, res) => {
 //     try {
 //         const user = await User.findById(req.params.id)
 
@@ -187,7 +232,18 @@ router.post('/likes',auth, async(req,res)=>{
 })
 
 
-
+router.post('/dislikes', auth , async(req,res)=>{
+    try{
+        const user = req.user;
+        user.dislikes.push(req.headers.id2);
+        await user.save();
+        res.json(user)
+    }
+    catch(e){
+        console.log('208',e);
+        res.status(404).send();
+    } 
+})
 
 
 module.exports = router

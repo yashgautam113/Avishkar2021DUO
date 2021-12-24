@@ -4,6 +4,7 @@ import { User } from "src/app/services/user.model";
 import { BehaviorSubject, interval, Observable } from "rxjs";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { AuthService } from "src/app/services/auth.service";
+import { CookieService } from "ngx-cookie-service";
 @Component({
     selector: 'app-feed',
     templateUrl : './feed.component.html',
@@ -15,7 +16,8 @@ export class FeedComponent implements OnInit{
      
     //  arr : any[];  
     constructor( 
-        private http: HttpClient, private authService: AuthService) {}
+        private http: HttpClient, private authService: AuthService,
+        private cookieService: CookieService) {}
     AUTH_API = "http://localhost:3000/";
     ngOnInit() {
         console.log('30',this.authService.savedUser._token)
@@ -26,12 +28,12 @@ export class FeedComponent implements OnInit{
             'Access-Control-Allow-Origin': 'http://localhost:4200',
             'withCredentials' : 'true',
             'observe' : 'response',
-            'Token' : this.authService.savedUser._token
+            'Token' : this.cookieService.get('Token')
         });
         let options = { headers: headers };
         console.log('21');
-        this.http.get( this.AUTH_API + 'usersList'
-        // options
+        this.http.get( this.AUTH_API + 'usersList',
+        options
         //   httpOptions
         ).subscribe(data =>{
             console.log('26',data)

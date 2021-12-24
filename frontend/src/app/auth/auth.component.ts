@@ -44,7 +44,9 @@ export class AuthComponent{
             console.log(resData);
             this.isLoading = false;
             // console.log('46')
+            if(this.isLoginMode)
             this.router.navigate(['/home']);
+            else this.router.navigate(['/auth']);
           }, error =>{
             console.log(error);
             // this.error = error.error.error.message,

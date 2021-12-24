@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { PhotoService } from "src/app/services/photo.service";
+import { CookieService } from "ngx-cookie-service";
 // import {Http, Headers, RequestOptionsArgs } from "@angular/http";
 
 @Component({
@@ -16,7 +17,8 @@ import { PhotoService } from "src/app/services/photo.service";
 export class ProfileComponent implements OnInit {
     [x: string]: any;
 constructor(private authService: AuthService, private router: Router,
-    private http : HttpClient , private photoService: PhotoService) {}
+    private http : HttpClient , private photoService: PhotoService,
+    private cookieService: CookieService) {}
     authObs: Observable<AuthResponseData>
     user: any;
     // photograph :any;
@@ -39,7 +41,7 @@ constructor(private authService: AuthService, private router: Router,
             'Access-Control-Allow-Origin': 'http://localhost:4200',
             'withCredentials' : 'true',
             'observe' : 'response',
-            'Token' : this.authService.savedUser._token
+            'Token' : this.cookieService.get('Token')
         });
         let options = { headers: headers };
         console.log('38');
@@ -58,7 +60,7 @@ constructor(private authService: AuthService, private router: Router,
         console.log('50');
 
         headers = new HttpHeaders({
-            'Content-type': 'image/jpg',
+            // 'Content-type': 'image/jpg',
             'Access-Control-Allow-Credentials' : 'true',
             'Access-Control-Allow-Origin': 'http://localhost:4200',
             'withCredentials' : 'true',
@@ -67,14 +69,16 @@ constructor(private authService: AuthService, private router: Router,
         });
 
         this.http.get( this.AUTH_API + 'avatar',
-        { headers: headers , responseType :'blob'}
+        { headers: headers 
+            , responseType :'blob'
+        }
         //   httpOptions
         ).subscribe(data =>{
             console.log('60',data)
             // let blob = new Blob(data['_body'], {type: 'image/jpg'});
             // let url = URL.createObjectURL(blob);
            this.createImageFromBlob(data);
-           
+        //    this.imageToShow = data
             // console.log('73',blob)
             console.log('62')
         },error =>{
@@ -92,6 +96,7 @@ constructor(private authService: AuthService, private router: Router,
    
         if (image) {
            reader.readAsDataURL(image);
+        //    console.log(reader);
         }
      } 
 

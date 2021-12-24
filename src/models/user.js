@@ -35,8 +35,8 @@ const userSchema = new mongoose.Schema({
         }
     },
     avatar: {
-        // type: Buffer
-        data: Buffer, contentType: String
+        type: Buffer
+        // data: Buffer, contentType: String
     },
     first_name: {
         type: String,
@@ -67,6 +67,9 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     likes:[{
+        type: String
+    }],
+    dislikes:[{
         type: String
     }],
     tokens: [{

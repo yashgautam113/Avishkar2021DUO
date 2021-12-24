@@ -79,7 +79,8 @@ export class AuthService{
             }, options
         ).pipe(tap(resData =>{
             this.savedUser = resData.user;
-            console.log('80', this.savedUser._token);
+            console.log('80', resData.token);
+            this.cookieService.set('Token', resData.token)
             this.handleAuthentication(resData.user.email,resData.user.localId,resData.token,
                 +resData.expiresIn)
                 // this.cookieService.set('Token', resData.token)
@@ -180,7 +181,7 @@ export class AuthService{
         localStorage.setItem('userData', JSON.stringify(user));
         // this.cookieService.set('Token', '1234')
         console.log('179',user.token);
-        this.cookieService.set('Token', user.token)
+        
     }
 
 
