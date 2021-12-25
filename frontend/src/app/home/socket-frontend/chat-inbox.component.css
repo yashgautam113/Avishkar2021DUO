@@ -1,3 +1,4 @@
+li { cursor: pointer; }
 .chat-messages-show-container{
     background: #c3c3c3;
     height: 400px;

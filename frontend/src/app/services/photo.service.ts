@@ -29,7 +29,10 @@ export class PhotoService{
     cookieValue = this.cookieService.get('Token');
     phtoedit(form: NgForm){
         let headers = new HttpHeaders({
-            'Content-Type': 'application/json',
+            'Content-Type': 'image/jpg',
+            // 'Content-Type': 'multipart/form-data',
+            // 'Accept': 'application/json',
+            // 'Content-Type': 'multipart/form-data',
             'Access-Control-Allow-Credentials' : 'true',
             'Access-Control-Allow-Origin': 'http://localhost:4200',
             'withCredentials' : 'true',

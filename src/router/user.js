@@ -153,7 +153,7 @@ const upload = multer({
     fileFilter(req, file, cb){
          // if(!file.originalname.endsWith('.jpg'))
         // match fn matches regular expression
-        if(!file.originalname.match(/\.(PNG)$/)) {
+        if(!file.originalname.match(/\.(jpg)$/)) {
             return cb(new Error('Please upload a PNG file'))
         }
         // cb(new Error('File must be a pdf'))
@@ -162,6 +162,7 @@ const upload = multer({
     }
 })
 router.post('/avatar',auth,  upload.single('avatar'), async(req,res)=>{
+    console.log(req.body.photo)
     req.user.avatar = req.body.photo
     await req.user.save()
     console.log('131')

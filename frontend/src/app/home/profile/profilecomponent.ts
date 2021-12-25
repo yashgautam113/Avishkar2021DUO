@@ -60,7 +60,7 @@ constructor(private authService: AuthService, private router: Router,
         console.log('50');
 
         headers = new HttpHeaders({
-            // 'Content-type': 'image/jpg',
+            'Content-type': 'image/jpg',
             'Access-Control-Allow-Credentials' : 'true',
             'Access-Control-Allow-Origin': 'http://localhost:4200',
             'withCredentials' : 'true',
@@ -109,6 +109,13 @@ constructor(private authService: AuthService, private router: Router,
         },e=>{
             console.log('65',e);
         })
+    }
+
+    selectFile(event: any) { //Angular 11, for stricter type
+		if(!event.target.files[0] || event.target.files[0].length == 0) {
+			this.msg = 'You must select an image';
+			return;
+		}
     }
 
 } 

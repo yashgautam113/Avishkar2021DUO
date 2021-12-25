@@ -9,6 +9,16 @@ const userRouter = require('./router/user')
 const http = require('http')
 const cors = require('cors');
 app.use(cors());
+
+
+
+
+// 
+const { generateMessage, generateLocationMessage } = require('./utils/messages')
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users')
+const { addRoom, recountRoom, getAllRooms } = require('./utils/rooms')
+
+
 // const corsOptions = {
 //   origin: "localhost:4200",
 //   credentials: true,
@@ -50,12 +60,45 @@ const io = require('socket.io')(server, {
     }
 });
 //runs when client connects
-io.on('connection', (socket) => {   //socket: object whose methods will be used
+io.on('connection', (socket) => { //socket: object whose methods will be used
     console.log('41 New webSocket Connection');
-    socket.on('message', (msg) => {
-        console.log(msg);
-        socket.broadcast.emit('message-broadcast', msg);
-    });
+    // socket.on('message', (msg) => {
+    //     console.log(msg);
+    //     socket.broadcast.emit('message-broadcast', msg);
+    // });
+    //existing rooms
+    io.emit('showExistingRooms', getAllRooms())
+    console.log('Emitted show existing rooms');
+
+    //JOINS ROOM
+    socket.on('join', ({ username, room }, callback) => {
+        const { error, user } = addUser({ id: socket.id, username, room })
+        if (error) {
+            return callback(error)
+        }
+
+        console.log('adding user', username);
+        console.log('to room', room);
+        addRoom(user.room)
+        socket.join(user.room)
+
+        callback()
+    })
+
+
+    //SSEND MESSAGE
+    socket.on('sendMessage', (data, callback) => {
+        // const currUser = getUser(socket.id)
+
+        console.log('91 app.js sending msg ', data.messageToSend);
+        console.log('in room', data.room);
+        io.to(data.room).emit('message', ({
+            messageRecieved: data.messageToSend,
+            username: data.username
+        }))
+
+        callback()
+    })
 });
 
 // server.listen(4000,() =>{
@@ -63,7 +106,7 @@ io.on('connection', (socket) => {   //socket: object whose methods will be used
 // })
 
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -93,4 +136,4 @@ app.use('/', userRouter)
 
 // app.listen(3000, () =>{
 //     console.log('Server is up on port 3000');
-// }) 
+// })

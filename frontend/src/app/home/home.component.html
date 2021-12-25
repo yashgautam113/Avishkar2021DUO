@@ -13,10 +13,21 @@
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" >
           <a routerLink="/profile" >{{email}}</a>
+          <!-- <router-outlet></router-outlet> -->
+          <a routerLink="/list">
+            <img src = "https://www.pngitem.com/pimgs/m/44-440504_message-heart-pink-overlay-tumblr-cute-kawaii-neon.png"
+            width="40px" height="40px">
+          </a>
         </li>
       </ul>
-        <app-chat-inbox></app-chat-inbox>
+      <ul>
+
+      </ul>
+        
     </div>
+    <!-- <div class="col-md-4">
+     <router-outlet></router-outlet>
+    </div> -->
     <div class="col-md-7">
       <app-feed></app-feed>
     </div>

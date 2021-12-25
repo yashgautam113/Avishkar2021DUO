@@ -14,6 +14,10 @@ import { EditComponent } from './home/edit/edit.component';
 import { FeedComponent } from './home/feed/feed.component';
 import { DisplayComponent } from './home/feed/display/display.component';
 import { ChatInboxComponent } from './home/socket-frontend/chat-inbox.component';
+import { RoomComponent } from './home/socket-frontend/rooms/rooms.component';
+import { ChatDataComponent } from './home/socket-frontend/chat-data/chat-data.component';
+import { RouterModule } from '@angular/router';
+import { ListComponent } from './home/socket-frontend/list/list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +28,10 @@ import { ChatInboxComponent } from './home/socket-frontend/chat-inbox.component'
     EditComponent,
     FeedComponent,
     DisplayComponent,
-    ChatInboxComponent
+    ChatInboxComponent,
+    RoomComponent,
+    ChatDataComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +39,10 @@ import { ChatInboxComponent } from './home/socket-frontend/chat-inbox.component'
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule
+    // ,
+    // RouterModule
   ],
+  exports: [RouterModule],
   providers: [CookieService,
     {
       provide: HTTP_INTERCEPTORS,
