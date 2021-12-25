@@ -23,6 +23,7 @@ export class AuthService{
     user = new BehaviorSubject<User>(null);
     token: string = null;
     AUTH_API = 'http://localhost:3000/'
+    id: string;
     private tokenExpirationTimer: any;
     constructor(private http: HttpClient, private router: Router, private cookieService : CookieService){}
     savedUser : any;
@@ -79,9 +80,11 @@ export class AuthService{
             }, options
         ).pipe(tap(resData =>{
             this.savedUser = resData.user;
+            this.id = resData.user._id;
+            console.log('82',this.savedUser);
             console.log('80', resData.token);
             this.cookieService.set('Token', resData.token)
-            this.handleAuthentication(resData.user.email,resData.user.localId,resData.token,
+            this.handleAuthentication(resData.user.email,resData.user._id,resData.token,
                 +resData.expiresIn)
                 // this.cookieService.set('Token', resData.token)
         }))
@@ -106,6 +109,9 @@ export class AuthService{
                                     new Date(userData._tokenExpirationDate));
             console.log('105', loadedUser.email)
             this.savedUser = loadedUser
+            this.id = this.savedUser.id
+            
+            console.log('110',this.savedUser);
         if(loadedUser._token){
             console.log('107',loadedUser);
             this.savedUser = loadedUser;

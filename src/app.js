@@ -5,12 +5,14 @@ const bodyParser = require('body-parser')
 const mongoose = require('./db/mongoose')
 var cookieParser = require('cookie-parser')
 const User = require('./models/user')
-const userRouter = require('./router/user')
+const { router, x } = require('./router/user')
 const http = require('http')
 const cors = require('cors');
 app.use(cors());
 
+const msgModel = require('./models/messages')
 
+console.log('14', x)
 
 
 // 
@@ -82,6 +84,29 @@ io.on('connection', (socket) => { //socket: object whose methods will be used
         addRoom(user.room)
         socket.join(user.room)
 
+
+        // Below query returns a promise and it is accessed using
+        // .then() and .catch
+        const chatHistoryPromise = msgModel.find({ room }).exec()
+        console.log('89', chatHistoryPromise);
+        chatHistoryPromise.then((result) => {
+                socket.emit('chat-history', result)
+                console.log('93: ', result);
+            })
+            // socket.emit('chat-history', chatHistory)
+            // chatHistory.forEach((chat) => {
+            //     socket.emit('chat-history', chat)
+            // })
+
+        // SHOW HISTORY
+        //  msgModel.find().then((result) => {
+        //     // console.log('History show step1');
+        //     socket.emit('chat-history', { result, room: user.room })
+        // }).catch((e) => {
+        //     console.log('History step1 error:', e);
+        // })
+
+
         callback()
     })
 
@@ -89,15 +114,27 @@ io.on('connection', (socket) => { //socket: object whose methods will be used
     //SSEND MESSAGE
     socket.on('sendMessage', (data, callback) => {
         // const currUser = getUser(socket.id)
+        const currMessage = new msgModel({
+            msg: data.messageToSend,
+            username: data.username,
+            createdAt: new Date().getTime(),
+            room: data.room
+        })
+        currMessage.save().then(() => {
+            console.log('100 currMessage:', currMessage);
+            console.log('101 app.js sending msg ', data.messageToSend);
+            console.log('in room', data.room);
+            io.to(currMessage.room).emit('message', currMessage)
+                // io.to(data.room).emit('message', ({
+                //     messageRecieved: data.messageToSend,
+                //     username: data.username
+                // }))
 
-        console.log('91 app.js sending msg ', data.messageToSend);
-        console.log('in room', data.room);
-        io.to(data.room).emit('message', ({
-            messageRecieved: data.messageToSend,
-            username: data.username
-        }))
+            callback()
+        }).catch((e) => {
 
-        callback()
+        })
+
     })
 });
 
@@ -131,7 +168,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json({ extended: false }))
 app.use(cookieParser())
 
-app.use('/', userRouter)
+app.use('/', router)
 
 
 // app.listen(3000, () =>{

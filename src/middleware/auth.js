@@ -4,31 +4,30 @@ const User = require('../models/user')
 // next is used in middlewares
 // by the call of next the code below the next() 
 // will execute after all the middleware functions are finsihed 
-const auth = async(req,res, next) => {
-    try{
+const auth = async(req, res, next) => {
+    try {
         // const token = req.cookies.Token
         const token = req.headers.token
-        // const token = req.params.auth
-        console.log('11',token)
-        if(token === undefined){
+            // const token = req.params.auth
+            // console.log('11',token)
+        if (token === undefined) {
             console.log('Executing')
             next()
-        }
-        else{
+        } else {
             // console.log('18')
-        const decoded = jwt.verify(token, 'tokenkey')
-        // console.log('20',decoded)
-        const user = await User.findOne({_id: decoded._id})
-        if(!user){
-            throw Error()
+            const decoded = jwt.verify(token, 'tokenkey')
+                // console.log('20',decoded)
+            const user = await User.findOne({ _id: decoded._id })
+            if (!user) {
+                throw Error()
+            }
+            req.token = token
+            req.user = user
+                // console.log('26',user)
+            next()
         }
-        req.token = token
-        req.user = user
-        // console.log('26',user)
-        next()
-    }
-    }catch(e){
-        console.log('30',e)
+    } catch (e) {
+        console.log('30', e)
         res.status(401).send('Authentication failed')
     }
 }

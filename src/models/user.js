@@ -10,33 +10,33 @@ const userSchema = new mongoose.Schema({
     // trim: true
     // },
     email: {
-        type: String, 
-        required : true,
-        unique : true,
-        trim : true,
-        lowercase : true,
-        validate(value){
-            if(!validator.isEmail(value)){
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        lowercase: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
                 throw new Error("Invalid Email")
             }
         }
-    }, 
-    password : {
+    },
+    password: {
         type: String,
-        required : true,
-        validate(value){
-            if(value.length < 7)
-            throw new Error("Too small")
+        required: true,
+        validate(value) {
+            if (value.length < 7)
+                throw new Error("Too small")
         },
-        trim : true,
-        validate(value){
-            if(value.includes('password'))
-            throw new Error("Invalid Choice")
+        trim: true,
+        validate(value) {
+            if (value.includes('password'))
+                throw new Error("Invalid Choice")
         }
     },
     avatar: {
         type: Buffer
-        // data: Buffer, contentType: String
+            // data: Buffer, contentType: String
     },
     first_name: {
         type: String,
@@ -46,36 +46,39 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    phone:{
+    phone: {
         type: Number,
         trim: true
     },
-    age:{
+    age: {
         type: Number,
-        trim : true
+        trim: true
     },
-    latitude:{
+    latitude: {
         type: Number
     },
-    longitude:{
+    longitude: {
         type: Number
     },
-    gender:{
+    gender: {
         type: String
     },
     bio: {
         type: String
     },
-    likes:[{
+    likes: [{
         type: String
     }],
-    dislikes:[{
+    dislikes: [{
+        type: String
+    }],
+    rooms: [{
         type: String
     }],
     tokens: [{
-        token : {
-            type : String,
-            required : true
+        token: {
+            type: String,
+            required: true
         }
     }]
 }, {
@@ -83,12 +86,12 @@ const userSchema = new mongoose.Schema({
 })
 
 // Hashing password
-userSchema.pre('save', async function(next){
+userSchema.pre('save', async function(next) {
     const user = this
 
     // middleware
-    if(user.isModified('password')){
-        user.password = await bcrypt.hash(user.password,8)
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8)
     }
     console.log('Just before saving')
     next()
@@ -96,10 +99,10 @@ userSchema.pre('save', async function(next){
 
 
 // generting authentication token
-userSchema.methods.generateAuthToken = async function(){
+userSchema.methods.generateAuthToken = async function() {
     const user = this
-    const token = jwt.sign({ _id : user._id.toString() },'tokenkey')
-    user.tokens = user.tokens.concat({token})
+    const token = jwt.sign({ _id: user._id.toString() }, 'tokenkey')
+    user.tokens = user.tokens.concat({ token })
     console.log(token)
     await user.save()
     return token
@@ -107,20 +110,20 @@ userSchema.methods.generateAuthToken = async function(){
 
 
 // Verifying logging in Credentials
-userSchema.statics.findByCredentials = async(email, password) =>{
-    const user = await User.findOne({email})
-    if(!user){
+userSchema.statics.findByCredentials = async(email, password) => {
+    const user = await User.findOne({ email })
+    if (!user) {
         throw new Error('Unable to Login')
     }
-    const isMatch = await bcrypt.compare(password,user.password)
-    if(!isMatch){
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) {
         throw new Error('Username of Password is Incorrect')
     }
     return user
 }
 
 // to avoid token outputn and avatar
-userSchema.methods.toJSON = function () {
+userSchema.methods.toJSON = function() {
     const user = this
     const userObject = user.toObject()
 

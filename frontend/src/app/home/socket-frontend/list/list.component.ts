@@ -1,6 +1,7 @@
+import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-
+import { AuthService } from 'src/app/services/auth.service';
 import { io } from 'socket.io-client';
 const SOCKET_ENDPOINT = 'localhost:3000';
 
@@ -12,29 +13,41 @@ const SOCKET_ENDPOINT = 'localhost:3000';
 export class ListComponent implements OnInit {
     room: any;
     rooms: any;
-    user: any;
     selectedRoom: any;
-    messageArray: { user: string, message: string }[] = [];
+    messageArray: { user: string, message: string, createdAt: any }[] = [];
     messageText: string;    //conatins input string
     socket;
     isOpen: boolean;
 
-    constructor(private route: ActivatedRoute) { }
-
+    constructor(private route: ActivatedRoute, private authService: AuthService) { }
+    user = this.authService.id;
     ngOnInit() {
         // this.room = this.route.snapshot.paramMap.get('name');
         this.setupSocketConnection()
 
+        this.showChatHistory()
         this.printMessages()
+    }
+
+    showChatHistory() {
+        this.messageArray = []
+
+        this.socket.on('chat-history', (chat) => {
+            chat.forEach(element => {
+                this.messageArray.push({user : element.username, message: element.msg, createdAt: element.createdAt})
+            });
+            console.log('37 list comp.ts', chat);
+
+        })
     }
 
     printMessages() {
         console.log('31');
 
-        this.socket.on('message', (data) => {
-            console.log('34', data);
+        this.socket.on('message', (currMessage) => {
+            console.log('34', currMessage);
 
-            this.messageArray.push({ message: data.messageRecieved, user: data.username })
+            this.messageArray.push({ message: currMessage.msg, user: currMessage.username, createdAt: currMessage.createdAt })
             console.log('33', this.messageArray);
 
         })
@@ -53,10 +66,10 @@ export class ListComponent implements OnInit {
 
     }
 
+    //Open room
     selectUserHandler(room) {
         this.isOpen = true; //opens input body
         this.room = room;
-        this.user = 'pankaj udas'
 
         this.selectedRoom = this.rooms.find((currRoom) => {
             return currRoom === room
