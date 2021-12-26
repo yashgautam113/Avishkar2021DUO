@@ -34,9 +34,10 @@ const userSchema = new mongoose.Schema({
                 throw new Error("Invalid Choice")
         }
     },
-    avatar: {
-        type: Buffer
-            // data: Buffer, contentType: String
+    image: {
+        // type: Buffer,
+        type: String,
+        trim: true,
     },
     first_name: {
         type: String,

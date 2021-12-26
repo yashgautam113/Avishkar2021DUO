@@ -5,6 +5,7 @@ import { BehaviorSubject, interval, Observable } from "rxjs";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { AuthService } from "src/app/services/auth.service";
 import { CookieService } from "ngx-cookie-service";
+
 @Component({
     selector: 'app-feed',
     templateUrl : './feed.component.html',
@@ -13,7 +14,7 @@ import { CookieService } from "ngx-cookie-service";
 
 export class FeedComponent implements OnInit{
      filteredUsers: {};
-     
+     imageToShow : any;
     //  arr : any[];  
     constructor( 
         private http: HttpClient, private authService: AuthService,
@@ -23,10 +24,14 @@ export class FeedComponent implements OnInit{
         console.log('30',this.authService.savedUser._token)
         
         let headers = new HttpHeaders({
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
+             'Accept': 'application/json',
+            // 'Content-Type': 'multipart/form-data',
+            'Content-Type': 'data.img.contentType',
             'Access-Control-Allow-Credentials' : 'true',
             'Access-Control-Allow-Origin': 'http://localhost:4200',
             'withCredentials' : 'true',
+            
             'observe' : 'response',
             'Token' : this.cookieService.get('Token')
         });
@@ -37,8 +42,11 @@ export class FeedComponent implements OnInit{
         //   httpOptions
         ).subscribe(data =>{
             console.log('26',data)
+            // let x = this.str2ab(data[0]);
+            // console.log('45',x);
+            // this.createImageFromBlob(x);
             this.filteredUsers = data;
-            console.log('25')
+            // console.log('25',this.filteredUsers[1].avatar)
         },error =>{
             console.log('29',error) 
 
@@ -50,6 +58,8 @@ export class FeedComponent implements OnInit{
 
 // });  
     }
+    
+
     
     
 }

@@ -62,10 +62,36 @@
                                             <!-- <p class="mb-0"><strong class="pr-1">Student ID:</strong>321000001</p>
             <p class="mb-0"><strong class="pr-1">Class:</strong>4</p> -->
                                             <!-- <p class="mb-0"><strong class="pr-1">LifeLover</strong></p> -->
-                                            <form #photoform="ngForm" class="form" (ngSubmit)="onSubmit(photoform)">
+                                            <!-- <form #photoform="ngForm" class="form" (ngSubmit)="onSubmit(photoform)">
                                                 <input type="file" id="photo" class="file-input" (change)="selectFile($event)" name="photo" ngModel required/>
                                                 <button class="button" type="submit" [disabled]="!photoform.valid">Submit</button>
-                                            </form>
+                                            </form> -->
+
+                                            <!-- <form>
+                                                <div>
+                                                    <input type="file" name="avatar" (change)="selectImage($event)" />
+                                                </div>
+                                                <br>
+                                                <div>
+                                                    <button type="submit" (click)="onSubmit()">Upload</button>
+                                                </div>
+                                            </form> -->
+                                            <label for="file">File:</label>
+                                            <input type="file" (change)="upload($event)" accept=".png,.jpg" />
+                                            <button (click)="uploadImage()">Upload Image</button>
+                                            <h1> {{ downloadableURL }}</h1>
+                                            <!-- <div style="padding: 20mm">
+
+                                                <input type="file" name="file" (input)="onFileChanged($event)" accept=".jpeg,.jpg,.png,.svg" />
+                                                <br />
+
+                                                <img [src]="downloadableURL" onerror="this.onerror=null;this.src='assets/noimage.jpg';" width="300px" height="300px" />
+
+                                                <br /> {{ downloadableURL }}
+
+
+
+                                            </div> -->
 
                                             <!-- 
 <div class="file-upload">

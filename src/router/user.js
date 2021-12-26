@@ -70,7 +70,7 @@ router.post('/login', async(req, res) => {
 router.post('/logout', auth, async(req, res) => {
     console.log('65')
     try {
-        console.log('LOGOUT', req.user)
+        // console.log('LOGOUT', req.user)
         req.user.tokens = req.user.tokens.filter((token) => {
             // res.clearCookie('Token')
             // console.log(token)
@@ -94,11 +94,12 @@ router.get('/usersList', auth, async(req, res) => {
         var dislikes = user.dislikes;
         likes.push(user._id);
         // ES6 destructuring
-        const array3 = [...likes, ...dislikes];;
+        const array3 = [...likes, ...dislikes];
         // likes.concat(arr);
         // console.log('93',array3.length)
         // nin query will find all elements except those in array3
         const users = await User.find({ _id: { $nin: array3 } });
+        // console.log('102', users)
         // const users = await User.find({})
         // console.log(users)
         // console.log('87',user)
@@ -132,17 +133,23 @@ router.get('/usersList', auth, async(req, res) => {
         //   }
         //   console.log(index);
         // var arr = users.filter(index => index!= user);
-        // console.log('103',arr)
+        // console.log('103', users[0])
+
+
         res.send(users);
     } catch (e) {
         console.log('93', e)
     }
 });
+// router.get('/test', async(req,res)=>{
 
+// })
 
 router.get('/profile', auth, async(req, res) => {
     try {
         user = req.user
+
+        console.log('154', user)
         res.send(user)
     } catch (e) {
         console.log('105', e)
@@ -178,15 +185,21 @@ const upload = multer({
             // cb(underfined, false)
     }
 })
-router.post('/avatar', auth, upload.single('avatar'), async(req, res) => {
-        console.log(req.body.photo)
-        req.user.avatar = req.body.photo
-        await req.user.save()
-        console.log('131')
-        res.send()
-    }, (error, req, res, next) => {
-        res.status(500).send()
-            ({ error: error.message })
+router.patch('/avatar', auth, async(req, res) => {
+        try {
+            // console.log('182', req.file)
+            // req.user.avatar = req.body.photo
+            // await req.user.save()
+            // console.log('131')
+            // res.send()
+
+            req.user.image = req.body.url;
+            console.log('199', req.body.url);
+            await req.user.save()
+            res.send()
+        } catch (e) {
+            console.log('190', e);
+        }
     })
     // router.post('/:id/avatar',  upload.single('avatar'), async (req, res) => {
     //     const user = await User.findById(req.params.id)

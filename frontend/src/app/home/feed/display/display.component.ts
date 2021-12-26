@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { DisplayService } from 'src/app/services/display.service';
+
 @Component({
     selector: 'app-display',
     templateUrl: './display.component.html',
@@ -14,6 +15,7 @@ import { DisplayService } from 'src/app/services/display.service';
 
     @Input() user : any;
     @Input() index: any;
+    image : any;
     buttonClicked = false;
     i = 1;
     id2: string;
@@ -24,8 +26,10 @@ import { DisplayService } from 'src/app/services/display.service';
     ngOnInit(){
        const id2 = this.user._id;
        this.id2 = id2;
-
+        this.image = this.user.image
+        console.log('30',this.image)
     }
+   
     AUTH_API = 'http://localhost:3000/';
     onsubmit(){
             this.buttonClicked = true;

@@ -6,7 +6,6 @@ import { AuthGuard } from './app/auth/auth.guard';
 import { ProfileComponent } from './app/home/profile/profilecomponent';
 import { EditComponent } from './app/home/edit/edit.component';
 import { FeedComponent } from './app/home/feed/feed.component';
-import { ChatDataComponent } from './app/home/socket-frontend/chat-data/chat-data.component';
 import { ListComponent } from './app/home/socket-frontend/list/list.component';
 const appRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -14,7 +13,7 @@ const appRoutes: Routes = [
     { path: 'home', component: HomeComponent
      ,children: [
         { path: '', component: HomeComponent ,canActivate: [AuthGuard]},
-        { path: ':room', component: ChatDataComponent}
+       
     ]
 },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},

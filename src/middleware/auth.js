@@ -8,8 +8,9 @@ const auth = async(req, res, next) => {
     try {
         // const token = req.cookies.Token
         const token = req.headers.token
-            // const token = req.params.auth
-            // console.log('11',token)
+
+        // const token = req.params.auth
+        // console.log('11',token)
         if (token === undefined) {
             console.log('Executing')
             next()
