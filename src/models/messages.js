@@ -1,10 +1,15 @@
 const mongoose = require('mongoose')
 
+
 const msgSchema = new mongoose.Schema({
     msg: {
         type: String,
         require: true
     },
+    // locationMsg: {
+    //     type: String,
+    //     require: true
+    // },
     username: {
         type: String,
         require: true

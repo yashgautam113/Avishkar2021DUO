@@ -149,6 +149,17 @@ router.get('/profile', auth, async(req, res) => {
     }
 })
 
+router.get('/rooms', auth, async(req, res) => {
+    try {
+        const user = req.user
+        console.log('155', user.rooms)
+        res.send(user.rooms)
+    } catch (e) {
+        console.log('231', e)
+    }
+})
+
+
 // profile picture
 const upload = multer({
     // dest: 'avatar',
@@ -225,6 +236,7 @@ router.get('/avatar', auth, async(req, res) => {
 // })
 
 
+
 router.post('/likes', auth, async(req, res) => {
     try {
         /*
@@ -265,8 +277,8 @@ router.post('/likes', auth, async(req, res) => {
             console.log(id2)
             const room = id1 + id2
             console.log('255', room)
-            user.rooms.push(room)
-            user2.rooms.push(room)
+            user.rooms.push({ room: room, user1: user.first_name, user2: user2.first_name });
+            user2.rooms.push({ room: room, user1: user2.first_name, user2: user.first_name });
             await user2.save()
         }
 

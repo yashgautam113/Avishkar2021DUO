@@ -116,6 +116,7 @@ io.on('connection', (socket) => { //socket: object whose methods will be used
         // const currUser = getUser(socket.id)
         const currMessage = new msgModel({
             msg: data.messageToSend,
+            locationMsg: null,
             username: data.username,
             createdAt: new Date().getTime(),
             room: data.room
@@ -135,6 +136,32 @@ io.on('connection', (socket) => { //socket: object whose methods will be used
 
         })
 
+    })
+
+    socket.on('sendLocation', (data, callback) => {
+        const urlString = `https://google.com/maps?q=${data.locationToSend.latitude},${data.locationToSend.longitude}`
+        const currMessage = {
+                msg: null,
+                locationMsg: urlString,
+                username: data.username,
+                createdAt: new Date().getTime(),
+                room: data.room
+            }
+            // const currMessage = new msgModel({
+            //     msg: null,
+            //     locationMsg: urlString,
+            //     username: data.username,
+            //     createdAt: new Date().getTime(),
+            //     room: data.room
+            // })
+            // currMessage.save().then(() => {
+        console.log('100 currMessage:', currMessage);
+        console.log('101 app.js sending msg ', data.locationToSend);
+        console.log('in room', data.room);
+        io.to(currMessage.room).emit('message', currMessage)
+
+        callback()
+            // })
     })
 });
 
