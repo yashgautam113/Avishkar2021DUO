@@ -1,8 +1,18 @@
 <div>
     <!-- <div class="col-xs-12"> -->
+    <h3>Interested in:</h3>
+    <div class="row">
+        <h4>Male</h4>
+
+        <label for="gender" class="switch">
+                    <input type="checkbox" checked id="gender" (click)="changeGender()">
+                    <span class="slider round"></span>
+                  </label>
+        <h4>Female</h4>
+    </div>
 
     <body>
-        <app-display *ngFor="let users of filteredUsers; let i = index" [user]="users" [index]="i" [currUser]="currUser"></app-display>
+        <app-display *ngFor="let users of filteredUsers; let i = index" [user]="users" [index]="i" [gender]="gender"></app-display>
         <!-- </div> -->
     </body>
 </div>

@@ -16,6 +16,7 @@ export class FeedComponent implements OnInit{
      filteredUsers: {};
      imageToShow : any;
      currUser: any;
+     gender: any;
     //  arr : any[];  
     constructor( 
         private http: HttpClient, private authService: AuthService,
@@ -23,7 +24,7 @@ export class FeedComponent implements OnInit{
     AUTH_API = "http://localhost:3000/";
     ngOnInit() {
         console.log('30',this.authService.savedUser._token)
-        
+        // this.gender = "male";
         let headers = new HttpHeaders({
             // 'Content-Type': 'application/json',
              'Accept': 'application/json',
@@ -91,5 +92,13 @@ options
     
 
     
-    
+    changeGender(){
+        var checkbox =<HTMLInputElement>document.getElementById("gender");
+        if(checkbox.checked ==  true){
+            this.gender = "female"
+        }
+        else{
+            this.gender = "male"
+        }
+    }
 }

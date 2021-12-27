@@ -15,9 +15,9 @@ import { DisplayService } from 'src/app/services/display.service';
 
     @Input() user : any;
     @Input() index: any;
-    @Input() currUser: any;
+    @Input() gender: any;
     image : any;
-    gender: any;
+    // gender: any;
     buttonClicked = false;
     i = 1;
     id2: string;
