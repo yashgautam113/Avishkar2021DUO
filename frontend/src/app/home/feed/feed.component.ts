@@ -15,6 +15,7 @@ import { CookieService } from "ngx-cookie-service";
 export class FeedComponent implements OnInit{
      filteredUsers: {};
      imageToShow : any;
+     currUser: any;
     //  arr : any[];  
     constructor( 
         private http: HttpClient, private authService: AuthService,
@@ -57,6 +58,35 @@ export class FeedComponent implements OnInit{
 //     console.log('28',this.arr) ;  
 
 // });  
+
+
+
+
+// let headers = new HttpHeaders({
+//     'Content-Type': 'application/json',
+//     'Access-Control-Allow-Credentials' : 'true',
+//     'Access-Control-Allow-Origin': 'http://localhost:4200',
+//     'withCredentials' : 'true',
+//     'observe' : 'response',
+//     'Token' : this.cookieService.get('Token')
+// });
+// let options = { headers: headers };
+console.log('38');
+this.http.get( this.AUTH_API + 'profile',
+options
+
+//   httpOptions
+).subscribe(data =>{
+    console.log('43',data)
+    this.currUser = data;
+    console.log('82',this.currUser)
+    // this.imageToShow = this.user.image
+    // this.imageToShow = null;
+    console.log('45',data)
+},error =>{
+    console.log('47',error) 
+
+});
     }
     
 

@@ -67,6 +67,10 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String
     },
+    first_time: {
+        type: Boolean,
+        default: false
+    },
     likes: [{
         type: String
     }],

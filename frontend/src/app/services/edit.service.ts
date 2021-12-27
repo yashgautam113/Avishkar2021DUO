@@ -39,7 +39,7 @@ export class EditService{
         console.log('26',form.value);
         // this.cookieValue = this.cookieService.get('Token')
         console.log('39',this.cookieValue);
-        return this.http.post<EditResponseData>(
+        return this.http.patch<EditResponseData>(
             this.AUTH_API + 'edit',{
                 first_name: form.value.first_name, 
                 last_name: form.value.last_name,
@@ -54,15 +54,21 @@ export class EditService{
             }, options
         ).pipe(tap(resData =>{
                 // new Date.getTime() returns number of milliseconds since 1970
-                console.log('39',resData.user);
+                console.log('39',resData);
             const expirationDate = new Date();
             const user = new User(
-                 resData.user.email,
-                 resData.user.localId,
-                 resData.user.idToken,
-                 expirationDate);
+                 resData.email,
+                //  resData.localId,
+                null,
+                null,
+                    null
+                    // ,
+                //  expirationDate,
+                // null
+                );
+                 console.log('64',user)
                  this.user.next(user);
-                 console.log('58',this.user);
+                //  console.log('58',this.user);
             }))
 
     }

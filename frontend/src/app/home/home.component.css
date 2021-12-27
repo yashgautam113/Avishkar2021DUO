@@ -1,3 +1,15 @@
-.col-md-7{
+.col-md-7 {
     background-color: coral;
+}
+
+.new {
+    background-color: coral;
+}
+
+#tab {
+    margin-top: 10px;
+}
+
+.head {
+    color: coral;
 }

@@ -15,7 +15,9 @@ import { DisplayService } from 'src/app/services/display.service';
 
     @Input() user : any;
     @Input() index: any;
+    @Input() currUser: any;
     image : any;
+    gender: any;
     buttonClicked = false;
     i = 1;
     id2: string;
@@ -28,12 +30,14 @@ import { DisplayService } from 'src/app/services/display.service';
        this.id2 = id2;
         this.image = this.user.image
         console.log('30',this.image)
+        // this.gender = this.currUser.gender
+        // console.log('32',this.gender)
     }
    
     AUTH_API = 'http://localhost:3000/';
     onsubmit(){
             this.buttonClicked = true;
-            
+            window.scrollBy(0,800);
             this.Obs = this.displayService.like(this.id2)
             this.Obs.subscribe(resData=>{
                 console.log('33',resData);
@@ -43,7 +47,7 @@ import { DisplayService } from 'src/app/services/display.service';
     }
     ondislike(){
         this.buttonClicked = true;
-
+        window.scrollBy(0,800);
         this.DisObs= this.displayService.dislike(this.id2);
         this.DisObs.subscribe(resData=>{
             console.log('44',resData);

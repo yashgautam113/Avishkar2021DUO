@@ -38,13 +38,19 @@ export class EditComponent implements OnInit {
         editObs = this.editService.edit(form, this.latitude , this.longitude);
         console.log('37',editObs)
         editObs.subscribe(resData=>{
+          
           console.log('40',resData)
-          this.router.navigate['/profile']
-        },error =>{
-          console.log(error);
+          // this.router.navigate["/profile"]
         })
+        // ,error =>{
+        //   console.log(error);
+        // }
+        this.router.navigate(['../profile'])
 
         form.reset()
+         
+
+        
     }
 
 

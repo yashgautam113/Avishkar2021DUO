@@ -41,11 +41,19 @@ export class AuthComponent{
         console.log('41',authObs)
         authObs.subscribe(resData =>{
             // console.log('line40');
-            console.log(resData);
+            console.log(44,resData.user.first_time);
             this.isLoading = false;
             // console.log('46')
-            if(this.isLoginMode)
-            this.router.navigate(['/home']);
+            if(this.isLoginMode){
+                if(!resData.user.first_time){
+                    
+                    this.router.navigate(['/edit']);
+
+                }
+                else{
+                this.router.navigate(['/home']);
+                }
+            }
             else this.router.navigate(['/auth']);
           }, error =>{
             console.log(error);

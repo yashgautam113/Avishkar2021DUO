@@ -23,8 +23,9 @@
             </div>
             <div class="col-rt-2">
                 <ul>
-                    <li><a (click)="onlogout()">Logout</a></li>
+                    <li><a routerLink="/home">Home</a></li>
                     <li><a routerLink="/edit">Edit Profile</a></li>
+                    <li><a (click)="onlogout()">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -121,17 +122,17 @@
                                                 <tr>
                                                     <th width="30%">Age </th>
                                                     <td width="2%">:</td>
-                                                    <td>to be fetched</td>
+                                                    <td>{{user.age}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="30%">Gender</th>
                                                     <td width="2%">:</td>
-                                                    <td>to be fetched</td>
+                                                    <td>{{user.gender}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th width="30%">Religion</th>
+                                                    <th width="30%">Phone No.</th>
                                                     <td width="2%">:</td>
-                                                    <td>To be fetched</td>
+                                                    <td>{{user.phone}}</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -139,11 +140,10 @@
                                     <div style="height: 26px"></div>
                                     <div class="card shadow-sm">
                                         <div class="card-header bg-transparent border-0">
-                                            <h3 class="mb-0"><i class="far fa-clone pr-1"></i>Other Information</h3>
+                                            <h3 class="mb-0"><i class="far fa-clone pr-1"></i>Bio</h3>
                                         </div>
                                         <div class="card-body pt-0">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                                                ex ea commodo consequat.</p>
+                                            <p>{{user.bio}}</p>
                                         </div>
                                     </div>
                                 </div>

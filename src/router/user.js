@@ -25,7 +25,7 @@ router.post('/signup', async(req, res) => {
     }
 })
 
-router.post('/edit', auth, async(req, res) => {
+router.patch('/edit', auth, async(req, res) => {
     try {
         const user = req.user
             //    console.log('26', user)
@@ -39,6 +39,7 @@ router.post('/edit', auth, async(req, res) => {
         user.gender = req.body.gender
         user.bio = req.body.bio
         user.age = req.body.age
+        user.first_time = true
         await req.user.save()
 
         res.json(user)
@@ -99,6 +100,7 @@ router.get('/usersList', auth, async(req, res) => {
         // console.log('93',array3.length)
         // nin query will find all elements except those in array3
         const users = await User.find({ _id: { $nin: array3 } });
+
         // console.log('102', users)
         // const users = await User.find({})
         // console.log(users)
